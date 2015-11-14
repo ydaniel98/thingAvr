@@ -59,6 +59,17 @@
 #ifndef LCD8_LINE5               
 #define LCD8_LINE5 0x50 
 #endif
+
+/* Definition for dimensios of LCD */
+#ifndef LCD8_X
+#define LCD8_X 0x10
+#endif
+
+#ifndef LCD8_Y
+#define LCD8_Y 0x02
+#endif
+/************************************/
+
 /****************************************************/
 
 /****************************************************/
@@ -157,7 +168,6 @@ void LCD8::signal(bool willRead) {
 
 void LCD8::clear() {
 	putCmd(0x01);
-	gotoxy(0,0);
 	_delay_ms(2);
 }	
 
@@ -203,6 +213,48 @@ void LCD8::gotoy(uint8_t _y_) {
 void LCD8::puts(const char *s) {
 	while (*s)
 		putc(*s++);
+}
+
+void LCD8::puts(const char *s, bool autocLineChange) {
+	if (autocLineChange) {
+		uint8_t pos = 0;
+		while (*s) {
+			if (pos == LCD8_X) 
+				gotoy(y + 1, GUARD);
+			putc(*s++);
+			pos++;
+		}
+		return;
+	}
+	puts(s);
+}
+
+void LCD8::gotox(uint8_t _x_, bool guard) {
+	gotoxy(_x_, y, guard);
+}
+
+void LCD8::gotoy(uint8_t _y_, bool guard) {
+	gotoxy(x, _y_, guard);
+}
+
+void LCD8::gotoxy(uint8_t _x_, uint8_t _y_, bool guard) {
+	if (guard) {
+		if (_x_ < LCD8_X && _y_ < LCD8_Y)
+			gotoxy(_x_, _y_);
+	}
+}
+
+void LCD8::puts(const char *s, bool autocLineChange, bool willClear) {
+	if (willClear) {
+		clear();
+		gotoxy(0, 0);
+	}
+	if (autocLineChange) {
+		puts(s, autocLineChange);
+		return;
+	}
+	puts(s);
+
 }
 
 #endif

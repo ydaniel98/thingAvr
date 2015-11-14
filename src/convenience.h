@@ -25,4 +25,32 @@
 #define INACTIVE 	0
 #endif
 
+#ifdef LCD8_h
+
+#ifndef AUTO
+#define AUTO 		1
+#endif
+
+#ifndef MANUAL 
+#define MANUAL 		0
+#endif
+
+#ifndef GUARD
+#define GUARD 		1
+#endif
+
+#ifndef FREE 			
+#define FREE 		1
+#endif
+
+#ifndef CLEAR			
+#define CLEAR		1
+#endif
+
+#ifndef KEEP
+#define KEEP 		0
+#endif
+
+#endif
+
 #endif
