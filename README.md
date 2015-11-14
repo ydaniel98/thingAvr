@@ -1,2 +1,2 @@
 # thingAvr
-a small library for air micro controllers
+a small library for avr micro controllers
