@@ -6,71 +6,6 @@
 #include "LCD8.h"
 #include "convenience.h"
 
-/* Definitions -- These may vary depending on the LCD8, the definitions can be specified by the user */
-
-/* Instruction to reset the LCD8 */
-#ifndef LCD8_RESET
-#define LCD8_RESET 0x30
-#endif
-/*******************************/
-
-/* Instruction to turn the LCD8's display off */
-#ifndef LCD8_DISPLAY_OFF
-#define LCD8_DISPLAY_OFF 0x08
-#endif
-/********************************************/
-
-/* Instruction to turn on the LCD8's Display */
-#ifndef LCD8_DISPLAY_ON
-#define LCD8_DISPLAY_ON 0x0C
-#endif
-/********************************************/
-
-/* Instruction to put the LCD8 on entry mode */
-#ifndef LCD8_ENTRY_MODE
-#define LCD8_ENTRY_MODE 0x06
-#endif
-/*******************************************/
-
-/* Instruction to move the LCD8's cursor */
-#ifndef LCD8_CURSOR
-#define LCD8_CURSOR 0x80
-#endif
-/****************************************/
-
-#define LCD8_LINE0 0x00 
-/* If lines are not defined assume the LCD8 is 16x2 */    
-#ifndef LCD8_LINE1              
-#define LCD8_LINE1 0x40 
-#endif
-
-#ifndef LCD8_LINE2   
-#define LCD8_LINE2 0x14 
-#endif      
-
-#ifndef LCD8_LINE3     
-#define LCD8_LINE3 0x54  
-#endif 
-
-#ifndef LCD8_LINE4                 
-#define LCD8_LINE4 0x10  
-#endif 
-
-#ifndef LCD8_LINE5               
-#define LCD8_LINE5 0x50 
-#endif
-
-/* Definition for dimensios of LCD */
-#ifndef LCD8_X
-#define LCD8_X 0x10
-#endif
-
-#ifndef LCD8_Y
-#define LCD8_Y 0x02
-#endif
-/************************************/
-
-/****************************************************/
 
 /****************************************************/
 /* Constructors 									*/
@@ -81,6 +16,7 @@ LCD8::LCD8(Pin rW, Pin rS, Pin e, PortDirect dataPort) {
 }
 
 LCD8::LCD8(lcd8Data _pinData_): pinData(_pinData_) {
+
 	pinData.rS.mode(OUTPUT);			// RS pin in output mode
 	pinData.e.mode(OUTPUT);				// Enable pin in output mode
 	pinData.rW.mode(OUTPUT);			// R/W pin in output mode
@@ -97,10 +33,12 @@ void LCD8::setup() {
 	_delay_ms(9.8);
 	reset();
 	reset();
+
 	/* Enable 8bit mode in LCD8 */
 	putCmd(0x38);
 	_delay_us(50);
 	/**************************/
+
 	off();
 	clear();
 	entryMode();
@@ -172,27 +110,27 @@ void LCD8::clear() {
 }	
 
 void LCD8::reset() {
-	putCmd(LCD8_RESET);
+	putCmd(LCD_RESET);
 	_delay_us(200);
 }
 
 void LCD8::off() {
-	putCmd(LCD8_DISPLAY_OFF);
+	putCmd(LCD_DISPLAY_OFF);
 	_delay_us(50);
 }
 
 void LCD8::entryMode() {
-	putCmd(LCD8_ENTRY_MODE);
+	putCmd(LCD_ENTRY_MODE);
 	_delay_us(50);
 }
 
 void LCD8::on() {
-	putCmd(LCD8_DISPLAY_ON);
+	putCmd(LCD_DISPLAY_ON);
 	_delay_us(50);
 }
 
 void LCD8::cursor(uint8_t c) {
-	putCmd(LCD8_CURSOR | c);
+	putCmd(LCD_CURSOR | c);
 }
 
 void LCD8::gotoxy(uint8_t _x_, uint8_t _y_) {
@@ -219,7 +157,7 @@ void LCD8::puts(const char *s, bool autocLineChange) {
 	if (autocLineChange) {
 		uint8_t pos = 0;
 		while (*s) {
-			if (pos == LCD8_X) 
+			if (pos == LCD_X) 
 				gotoy(y + 1, GUARD);
 			putc(*s++);
 			pos++;
@@ -239,7 +177,7 @@ void LCD8::gotoy(uint8_t _y_, bool guard) {
 
 void LCD8::gotoxy(uint8_t _x_, uint8_t _y_, bool guard) {
 	if (guard) {
-		if (_x_ < LCD8_X && _y_ < LCD8_Y)
+		if (_x_ < LCD_X && _y_ < LCD_Y)
 			gotoxy(_x_, _y_);
 	}
 }
