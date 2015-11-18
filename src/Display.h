@@ -2,7 +2,7 @@
 #define Display_h
 
 #include <avr/io.h>
-#include "PortVirtual.h"
+#include "PinGroup.h"
 #include "Pin.h"
 
 /* Holds the data for a 4bit 7segment display decoder */
@@ -20,7 +20,7 @@ typedef struct decoder4BitMap {
 
 
 /* Class definition - Display controll, assuming the use a decoder */
-class Display: PortVirtual {
+class Display: PinGroup {
 public:
 	void write(uint32_t w);					// Writes the given number to the display as long as it is within the digit range
 	void clearDisp();						// Writes 0 to the display

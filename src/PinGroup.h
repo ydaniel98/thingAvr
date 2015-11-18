@@ -1,11 +1,11 @@
-#ifndef PortVirtual_h
-#define PortVirtual_h
+#ifndef PinGroup_h
+#define PinGroup_h
 
 #include <avr/io.h>
 
 #include "Pin.h"
 
-class PortVirtual {
+class PinGroup {
 public:
 
 	Pin *pins;
@@ -19,8 +19,8 @@ public:
 	void mode(bool m);			// Sets the mode on the virtual port
 	void set(unsigned int n);	// Puts the given value on the virtual port
 	
-	PortVirtual() {};
-	PortVirtual(Pin * _pins_, uint8_t _bits_);
+	PinGroup() {};
+	PinGroup(Pin * _pins_, uint8_t _bits_);
 };
 
 #endif

@@ -1,25 +1,25 @@
-#ifndef PortVirtual_cpp
-#define PortVirtual_cpp
+#ifndef PinGroup_cpp
+#define PinGroup_cpp
 
 #include <avr/io.h>
-#include "PortVirtual.h"
+#include "PinGroup.h"
 #include "Pin.h"
 
-PortVirtual::PortVirtual(Pin *_pins_, uint8_t _bits_): pins(_pins_), bits(_bits_) {}
+PinGroup::PinGroup(Pin *_pins_, uint8_t _bits_): pins(_pins_), bits(_bits_) {}
 
-void PortVirtual::clear() {
+void PinGroup::clear() {
 	for (uint8_t i=0; i < bits; i++) {
 		pins[i].low();
 	}
 }
 
-void PortVirtual::overflow() {
+void PinGroup::overflow() {
 	for (uint8_t i=0; i < bits; i++) {
         pins[i].high();
 	}
 }
 
-void PortVirtual::set(unsigned int n) {
+void PinGroup::set(unsigned int n) {
 	clear();
 	for (uint8_t i=0; i < bits; i++) {
 		if (n & (1 << (bits - 1 - i))) {
@@ -29,13 +29,13 @@ void PortVirtual::set(unsigned int n) {
 	}
 }
 
-void PortVirtual::mode(bool m) {
+void PinGroup::mode(bool m) {
 	for (uint8_t i=0; i < bits; i++) {
 		pins[i].mode(m);
 	}
 }
 
-bool PortVirtual::readAll() {
+bool PinGroup::readAll() {
 	bool r = 1;
 	for (uint8_t i=0; i < bits; i++) {
 		r = r && pins[i].read();
@@ -43,7 +43,7 @@ bool PortVirtual::readAll() {
 	return r;
 }
 
-unsigned int PortVirtual::read() {
+unsigned int PinGroup::read() {
 	unsigned int result = 0;
 	for (unsigned int i=0; i < bits; i++) {
 		if (pins[i].read())

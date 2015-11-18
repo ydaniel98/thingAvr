@@ -2,7 +2,7 @@
 #define Display_cpp
 
 #include <avr/io.h>
-#include "PortVirtual.h"
+#include "PinGroup.h"
 #include "Pin.h"
 #include "Display.h"
 #include "parse.h"
@@ -11,7 +11,7 @@
 /* TODO: use atoi to parse int */
 
 
-Display::Display(decoder4bitMap *_decodMap_, uint8_t _digits_): PortVirtual(portBuffer, 4), decodMap(_decodMap_), digits(_digits_) {
+Display::Display(decoder4bitMap *_decodMap_, uint8_t _digits_): PinGroup(portBuffer, 4), decodMap(_decodMap_), digits(_digits_) {
 	for (uint8_t i=0; i < digits; i++) {
 		setBuffer(decodMap[i]);
 		mode(OUTPUT);				// Make Sure all pins are set to ouput
