@@ -11,6 +11,7 @@ typedef struct PortData {
 
 	PortData(volatile uint8_t *ddr, volatile uint8_t *dPort, volatile uint8_t *readR): ddr(ddr), dPort(dPort), readR(readR) {}
 	PortData() {}
+	
 } PortData;
 /* Pin_h */
 

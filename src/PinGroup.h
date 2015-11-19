@@ -13,7 +13,6 @@ public:
 
 	void clear();				// Puts 0x00 on port
 	void overflow();			// Sets the maximun value on port
-	bool readAll();				// Returns true if all pins are high
 	unsigned int read();		// Returns the value on the virtual port
 
 	void mode(bool m);			// Sets the mode on the virtual port

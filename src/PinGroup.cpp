@@ -35,14 +35,6 @@ void PinGroup::mode(bool m) {
 	}
 }
 
-bool PinGroup::readAll() {
-	bool r = 1;
-	for (uint8_t i=0; i < bits; i++) {
-		r = r && pins[i].read();
-	}
-	return r;
-}
-
 unsigned int PinGroup::read() {
 	unsigned int result = 0;
 	for (unsigned int i=0; i < bits; i++) {

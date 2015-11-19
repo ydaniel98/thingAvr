@@ -22,10 +22,6 @@ uint8_t PortDirect::read() {
 	return *(data.readR);
 }
 
-bool PortDirect::readAll() {
-	return read() == 0xFF;
-}
-
 void PortDirect::clear() {
 	set(0x00);
 }
