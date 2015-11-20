@@ -1,21 +1,30 @@
-#ifndef LCD8_cpp
-#define LCD8_cpp
+#ifndef lcd8_cpp
+#define lcd8_cpp
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "LCD8.h"
+#include "Lcd8.h"
+#include "lcdDefs.h"
 #include "convenience.h"
+
+#define CHAR_WRITE_MODE	pinData.rW.low(); pinData.rS.high();	
+
+#define CMD_WRITE_MODE  pinData.rW.low(); pinData.rS.low();	
+
+#define READ_MODE		pinData.dataPort.clear(); pinData.dataPort.mode(INPUT); pinData.rS.low(); pinData.rW.high();						
+
+#define WRITE_DATA		pinData.e.low(); signal(false);	pinData.dataPort.clear();	
 
 
 /****************************************************/
 /* Constructors 									*/
 /****************************************************/
 
-LCD8::LCD8(Pin rW, Pin rS, Pin e, PortDirect dataPort) {
+Lcd8::Lcd8(Pin rW, Pin rS, Pin e, Port dataPort) {
 	pinData = lcd8Data(rW, rS, e, dataPort);	
 }
 
-LCD8::LCD8(lcd8Data _pinData_): pinData(_pinData_) {
+Lcd8::Lcd8(lcd8Data _pinData_): pinData(_pinData_) {
 
 	pinData.rS.mode(OUTPUT);			// RS pin in output mode
 	pinData.e.mode(OUTPUT);				// Enable pin in output mode
@@ -28,60 +37,57 @@ LCD8::LCD8(lcd8Data _pinData_): pinData(_pinData_) {
 
 /***************************************************/
 
-void LCD8::setup() {
-	reset();
-	_delay_ms(9.8);
-	reset();
-	reset();
+void Lcd8::setup() {
 
-	/* Enable 8bit mode in LCD8 */
-	putCmd(0x38);
+	putCmd(LCD_RESET);
+	_delay_ms(10);
+	putCmd(LCD_RESET);
+	_delay_us(200);
+	putCmd(LCD_RESET);
+	_delay_us(200);
+
+	putCmd(LCD_FUNCTION_SET_8);
 	_delay_us(50);
-	/**************************/
 
-	off();
+	putCmd(LCD_DISPLAY_OFF);
+	_delay_us(50);
+	
 	clear();
-	entryMode();
-	on();
+
+	putCmd(LCD_ENTRY_MODE);
+	_delay_us(50);
+
+	putCmd(LCD_DISPLAY_ON);
+	_delay_us(50);
 }
 
-void LCD8::putc(uint8_t c) {
+void Lcd8::putc(uint8_t c) {
 
-	ready();						// Wait until LCD8 is not busy
+	ready();						// Wait until Lcd8 is not busy
 	pinData.dataPort.set(c);		// Set the data in the port
-	pinData.rW.low();				// Set the R/W low
-	pinData.rS.high();				// Set the RS pin high
-	pinData.e.low();				// Set the Enable pin initially low
-	signal(false);					// Signal (Flash) the enable pin
-	pinData.dataPort.clear();		// Clear data from the port
+	CHAR_WRITE_MODE
+	WRITE_DATA
 }	
 
-void LCD8::putCmd(uint8_t command) {
+void Lcd8::putCmd(uint8_t command) {
 
-	ready();							// Wait until LCD8 is not busy
+	ready();							// Wait until Lcd8 is not busy
 	pinData.dataPort.set(command);		// Set the data in the port
-	pinData.rW.low();					// Set the R/W pin low
-	pinData.rS.low();					// Set the RS pin low
-	pinData.e.low();					// Set the enable pin initially low
-	signal(false);						// Signal the enable pin
-	pinData.dataPort.clear();			// Clear data from port
+	CMD_WRITE_MODE
+	WRITE_DATA
 }
 
-void LCD8::ready() {
+void Lcd8::ready() {
 
-	pinData.dataPort.clear();						// Make sure data port is clear
-	pinData.dataPort.mode(INPUT);					// Change port to input mode
+	READ_MODE
 
-	pinData.rS.low();								// Set RS pin low		
-	pinData.rW.high();								// Set R/W high
-
-	while(pinData.dataPort.read() == 0x80)			// Wait until LCD8 returns 0x00
+	while(pinData.dataPort.read() == 0x80)			// Wait until Lcd8 returns 0x00
 		signal(true);
 
 	pinData.dataPort.mode(OUTPUT);
 }	
 
-void LCD8::signal(bool willRead) {
+void Lcd8::signal(bool willRead) {
 
 	pinData.e.high();				// Set the enable Pin High
 	if (willRead)
@@ -104,56 +110,36 @@ void LCD8::signal(bool willRead) {
 	pinData.e.low();				// Set the enable pin low
 }	
 
-void LCD8::clear() {
+void Lcd8::clear() {
 	putCmd(0x01);
 	_delay_ms(2);
 }	
 
-void LCD8::reset() {
-	putCmd(LCD_RESET);
-	_delay_us(200);
-}
-
-void LCD8::off() {
-	putCmd(LCD_DISPLAY_OFF);
-	_delay_us(50);
-}
-
-void LCD8::entryMode() {
-	putCmd(LCD_ENTRY_MODE);
-	_delay_us(50);
-}
-
-void LCD8::on() {
-	putCmd(LCD_DISPLAY_ON);
-	_delay_us(50);
-}
-
-void LCD8::cursor(uint8_t c) {
+void Lcd8::cursor(uint8_t c) {
 	putCmd(LCD_CURSOR | c);
 }
 
-void LCD8::gotoxy(uint8_t _x_, uint8_t _y_) {
+void Lcd8::gotoxy(uint8_t _x_, uint8_t _y_) {
 	x = _x_; 
 	y = _y_;
 
 	cursor((_y_ << 6) + _x_);
 }
 
-void LCD8::gotox(uint8_t _x_) {
+void Lcd8::gotox(uint8_t _x_) {
 	gotoxy(_x_, y);
 }
 
-void LCD8::gotoy(uint8_t _y_) {
+void Lcd8::gotoy(uint8_t _y_) {
 	gotoxy(x, _y_);
 }
 
-void LCD8::puts(const char *s) {
+void Lcd8::puts(const char *s) {
 	while (*s)
 		putc(*s++);
 }
 
-void LCD8::puts(const char *s, bool autocLineChange) {
+void Lcd8::puts(const char *s, bool autocLineChange) {
 	if (autocLineChange) {
 		uint8_t pos = 0;
 		while (*s) {
@@ -167,22 +153,22 @@ void LCD8::puts(const char *s, bool autocLineChange) {
 	puts(s);
 }
 
-void LCD8::gotox(uint8_t _x_, bool guard) {
+void Lcd8::gotox(uint8_t _x_, bool guard) {
 	gotoxy(_x_, y, guard);
 }
 
-void LCD8::gotoy(uint8_t _y_, bool guard) {
+void Lcd8::gotoy(uint8_t _y_, bool guard) {
 	gotoxy(x, _y_, guard);
 }
 
-void LCD8::gotoxy(uint8_t _x_, uint8_t _y_, bool guard) {
+void Lcd8::gotoxy(uint8_t _x_, uint8_t _y_, bool guard) {
 	if (guard) {
 		if (_x_ < LCD_X && _y_ < LCD_Y)
 			gotoxy(_x_, _y_);
 	}
 }
 
-void LCD8::puts(const char *s, bool autocLineChange, bool willClear) {
+void Lcd8::puts(const char *s, bool autocLineChange, bool willClear) {
 	if (willClear) {
 		clear();
 		gotoxy(0, 0);

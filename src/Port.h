@@ -8,6 +8,7 @@
 class Port: Pin {
 public:
 	void set(uint8_t s);					// Sets the number s on the port
+	void clear();
 
 	void mode(uint8_t pin, bool m);			// Sets the mode for an specific pin
 	void mode(bool m);						// Sets mode for for all pins on port
@@ -19,6 +20,7 @@ public:
 
 	Port(PortData data);
 	Port(volatile uint8_t *ddr, volatile uint8_t *dPort, volatile uint8_t *readR);
+	Port() {}
 
 private:
 	PortData data;

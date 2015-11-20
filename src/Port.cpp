@@ -33,7 +33,11 @@ uint8_t Port::read() {
 
 bool Port::read(uint8_t pin) {
 	return PIN & (1 << pin);
-}			
+}	
+
+void Port::clear() {
+	set(0x00);
+}		
 
 Pin Port::operator[](uint8_t pin) {
 	return Pin(data, pin);
