@@ -3,7 +3,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "Lcd8.h"
+#include "lcd8.h"
 #include "lcdDefs.h"
 #include "convenience.h"
 
