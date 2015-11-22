@@ -3,11 +3,11 @@
 
 /* Convenience for functions */
 #ifndef AUTO
-#define AUTO 				1
+#define AUTO 				0
 #endif	
 
 #ifndef MANUAL 
-#define MANUAL 				0
+#define MANUAL 				1
 #endif	
 
 #ifndef GUARD
@@ -15,15 +15,15 @@
 #endif
 
 #ifndef FREE 			
-#define FREE 				1
+#define FREE 				0
 #endif	
 
 #ifndef CLEAR			
-#define CLEAR				1
+#define CLEAR				2
 #endif	
 
 #ifndef KEEP
-#define KEEP 				0
+#define KEEP 				3
 #endif
 
 /****************************/

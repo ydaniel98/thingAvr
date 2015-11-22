@@ -44,7 +44,7 @@ void Lcd4::setup() {
 	nibbleCmd(0x02);					// 4 bit mode
 	_delay_us(200);
 
-	putCmd(LCD_FUNCTION_SET_4;	// Function set
+	putCmd(LCD_FUNCTION_SET_4);			// Function set
 	_delay_us(100);
 
 	putCmd(LCD_DISPLAY_OFF);			// Turn display off
@@ -118,13 +118,14 @@ void Lcd4::ready() {
 	do {
 
 		e.high();
+		wait(true);
 		flag = dataPort.read() << 4;
-		//wait(true);
 		e.low();
 
 		e.high();
+		wait(true);
+
 		flag |= dataPort.read();
-		//wait(true);
 		e.low();
 
 	} while(flag == 0x80);
@@ -188,16 +189,23 @@ void Lcd4::puts(const char *s) {
 		putc(*s++);
 }
 
-void Lcd4::puts(const char *s, bool autocLineChange) {
-	if (autocLineChange) {
-		uint8_t pos = 0;
-		while (*s) {
-			if (pos == LCD_X) 
-				gotoy(y + 1, GUARD);
-			putc(*s++);
-			pos++;
+void Lcd4::puts(const char *s, uint8_t param) {
+	switch (param) {
+		case AUTO: {
+			uint8_t pos = 0;
+			while (*s) {
+				if (pos == LCD_X) 
+					gotoy(y + 1, GUARD);
+				putc(*s++);
+				pos++;
+			}
+			return;
 		}
-		return;
+		case CLEAR: {
+			clear();
+			gotoxy(0, 0);
+			break;
+		}
 	}
 	puts(s);
 }
@@ -215,19 +223,6 @@ void Lcd4::gotoxy(uint8_t _x_, uint8_t _y_, bool guard) {
 		if (_x_ < LCD_X && _y_ < LCD_Y)
 			gotoxy(_x_, _y_);
 	}
-}
-
-void Lcd4::puts(const char *s, bool autocLineChange, bool willClear) {
-	if (willClear) {
-		clear();
-		gotoxy(0, 0);
-	}
-	if (autocLineChange) {
-		puts(s, autocLineChange);
-		return;
-	}
-	puts(s);
-
 }
 
 #endif

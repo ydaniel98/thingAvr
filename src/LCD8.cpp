@@ -139,16 +139,23 @@ void Lcd8::puts(const char *s) {
 		putc(*s++);
 }
 
-void Lcd8::puts(const char *s, bool autocLineChange) {
-	if (autocLineChange) {
-		uint8_t pos = 0;
-		while (*s) {
-			if (pos == LCD_X) 
-				gotoy(y + 1, GUARD);
-			putc(*s++);
-			pos++;
+void Lcd8::puts(const char *s, uint8_t param) {
+	switch (param) {
+		case AUTO: {
+			uint8_t pos = 0;
+			while (*s) {
+				if (pos == LCD_X) 
+					gotoy(y + 1, GUARD);
+				putc(*s++);
+				pos++;
+			}
+			return;
 		}
-		return;
+		case CLEAR: {
+			clear();
+			gotoxy(0, 0);
+			break;
+		}
 	}
 	puts(s);
 }
@@ -166,19 +173,6 @@ void Lcd8::gotoxy(uint8_t _x_, uint8_t _y_, bool guard) {
 		if (_x_ < LCD_X && _y_ < LCD_Y)
 			gotoxy(_x_, _y_);
 	}
-}
-
-void Lcd8::puts(const char *s, bool autocLineChange, bool willClear) {
-	if (willClear) {
-		clear();
-		gotoxy(0, 0);
-	}
-	if (autocLineChange) {
-		puts(s, autocLineChange);
-		return;
-	}
-	puts(s);
-
 }
 
 #endif
