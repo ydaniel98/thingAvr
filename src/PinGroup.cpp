@@ -44,4 +44,8 @@ unsigned int PinGroup::read() {
 	return result;
 }
 
+Pin PinGroup::operator[](uint8_t pin) {
+	return pins[pin];
+}
+
 #endif

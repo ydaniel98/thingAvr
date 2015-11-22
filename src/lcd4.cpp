@@ -32,32 +32,36 @@ Lcd4::Lcd4(Pin rW, Pin rS, Pin e, PinGroup dataPort): rW(rW), rS(rS), e(e), data
 
 void Lcd4::setup() {
 
-	nibbleCmd(LCD_RESET >> 4);
-	_delay_ms(10);
-	nibbleCmd(LCD_RESET >> 4);
+	_delay_ms(50); 	
+
+	nibbleCmd(LCD_RESET >> 4);			// Software reset
+	_delay_ms(10);	
+	nibbleCmd(LCD_RESET >> 4);	
 	_delay_us(200);
 	nibbleCmd(LCD_RESET >> 4);
 	_delay_us(200);
 
-	nibbleCmd(0x02);
+	nibbleCmd(0x02);					// 4 bit mode
 	_delay_us(200);
 
-	putCmd(LCD_FUNCTION_SET_4);
+	putCmd(LCD_FUNCTION_SET_4;	// Function set
 	_delay_us(100);
 
-	putCmd(LCD_DISPLAY_OFF);
+	putCmd(LCD_DISPLAY_OFF);			// Turn display off
 	_delay_us(50);
 	
-	clear();
+	clear();							// Clear
 
-	putCmd(LCD_ENTRY_MODE);
+	putCmd(LCD_ENTRY_MODE);				// Entry mode
 	_delay_us(50);
 
-	putCmd(LCD_DISPLAY_ON);
-	_delay_us(50);
+	putCmd(LCD_DISPLAY_ON);		// Turn display on
+	_delay_us(50);	
 }	
 
 void Lcd4::putc(uint8_t c) {
+
+	ready();
 
 	rS.high();
 	rW.low();
@@ -88,7 +92,7 @@ void Lcd4::putCmd(uint8_t command) {
 }
 
 void Lcd4::nibbleCmd(uint8_t n) {
-
+	
 	rS.low();
 	rW.low();
 
@@ -109,8 +113,21 @@ void Lcd4::ready() {
 
 	dataPort.mode(INPUT);
 
-	while (dataPort.read() == 0x08)
-		signal(true);
+	uint8_t flag;
+
+	do {
+
+		e.high();
+		flag = dataPort.read() << 4;
+		//wait(true);
+		e.low();
+
+		e.high();
+		flag |= dataPort.read();
+		//wait(true);
+		e.low();
+
+	} while(flag == 0x80);
 
 	dataPort.mode(OUTPUT);
 }	

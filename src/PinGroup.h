@@ -17,6 +17,8 @@ public:
 
 	void mode(bool m);			// Sets the mode on the virtual port
 	void set(unsigned int n);	// Puts the given value on the virtual port
+
+	Pin operator[](uint8_t pin);
 	
 	PinGroup() {};
 	PinGroup(Pin * _pins_, uint8_t _bits_);
