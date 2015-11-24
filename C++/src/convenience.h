@@ -9,12 +9,12 @@
 #define INPUT  				0
 #endif
 
-#ifndef HIGH
-#define HIGH 				1
+#ifndef H
+#define H 				1
 #endif	
 
-#ifndef LOW
-#define LOW  				0
+#ifndef L
+#define L  				0
 #endif
 
 #ifndef ACTIVE

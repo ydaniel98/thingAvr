@@ -2,11 +2,10 @@
 #define Pin_h
 
 #include "structs.h"
+#include "in_outs.h"
 
 class Pin {
 public:
-	PortData data;
-	uint8_t pinNum;
 
 	void high();			// Set pin high
 	void low();				// Set pin low
@@ -19,6 +18,13 @@ public:
 	Pin(PortData data, uint8_t pinNum);
 	Pin(volatile uint8_t *ddr, volatile uint8_t *dPort, volatile uint8_t *readR, uint8_t pinNum);
 	Pin() {};
+
+private:
+	volatile uint8_t *ddr;
+	volatile uint8_t *dPort;
+	volatile uint8_t *readR;
+
+	uint8_t pinNum;
 };
 
 #endif
