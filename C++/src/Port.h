@@ -23,7 +23,9 @@ public:
 	Port() {}
 
 private:
-	PortData data;
+	volatile uint8_t *ddr;
+	volatile uint8_t *dPort;
+	volatile uint8_t *readR;
 };
 
 #endif

@@ -2,27 +2,19 @@
 #define convenience_h
 
 #ifndef OUTPUT
-#define OUTPUT 				1
+#define OUTPUT 	1
 #endif
 
 #ifndef INPUT
-#define INPUT  				0
+#define INPUT  	0
 #endif
 
 #ifndef H
-#define H 				1
+#define H 		1
 #endif	
 
 #ifndef L
-#define L  				0
-#endif
-
-#ifndef ACTIVE
-#define ACTIVE				1
-#endif	
-
-#ifndef INACTIVE
-#define INACTIVE 			0
+#define L  		0
 #endif
 
 #endif

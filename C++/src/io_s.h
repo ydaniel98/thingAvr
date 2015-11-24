@@ -1,5 +1,5 @@
-#ifndef in_outs_h
-#define in_outs_h
+#ifndef io_s_h
+#define io_s_h
 
 #define OUT(DDR, PIN) 		DDR |= 1 << PIN
 #define IN(DDR, PIN)  		DDR &= ~(1 << PIN)

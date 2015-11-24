@@ -8,9 +8,6 @@
 #include "parse.h"
 #include "convenience.h"
 
-/* TODO: use atoi to parse int */
-
-
 Display::Display(decoder4bitMap *_decodMap_, uint8_t _digits_): PinGroup(portBuffer, 4), decodMap(_decodMap_), digits(_digits_) {
 	for (uint8_t i=0; i < digits; i++) {
 		setBuffer(decodMap[i]);

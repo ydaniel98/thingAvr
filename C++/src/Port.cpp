@@ -6,14 +6,16 @@
 #include "structs.h"
 #include "Port.h"
 
-#define DDR  *(data.ddr)
-#define PORT *(data.dPort)
-#define PIN  *(data.readR)
+#define DDR  *(ddr)
+#define PORT *(dPort)
+#define PIN  *(readR)
 
-Port::Port(PortData data): data(data) {}
-Port::Port(volatile uint8_t *ddr, volatile uint8_t *dPort, volatile uint8_t *readR) {
-	data = PortData(ddr, dPort, readR);
+Port::Port(PortData data) {
+	ddr 	= data.ddr;
+	dPort	= data.dPort;
+	readR 	= data.readR;
 }
+Port::Port(volatile uint8_t *ddr, volatile uint8_t *dPort, volatile uint8_t *readR): ddr(ddr), dPort(dPort), readR(readR) {}
 
 void Port::set(uint8_t s) {
 	PORT = s;
@@ -40,7 +42,7 @@ void Port::clear() {
 }		
 
 Pin Port::operator[](uint8_t pin) {
-	return Pin(data, pin);
+	return Pin(ddr, dPort, readR, pin);
 }
 
 #endif

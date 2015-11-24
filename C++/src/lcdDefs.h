@@ -57,11 +57,11 @@
 #endif
 
 #ifndef LCD_FUNCTION_SET_8
-#define LCD_FUNCTION_SET_8 0x38
+#define LCD_FUNCTION_SET_8 	0x38
 #endif
 
 #ifndef LCD_FUNCTION_SET_4
-#define LCD_FUNCTION_SET_4 0x28
+#define LCD_FUNCTION_SET_4 	0x28
 #endif
 
 #endif
