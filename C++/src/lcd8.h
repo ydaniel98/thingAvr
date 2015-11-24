@@ -33,10 +33,10 @@ public:
 	void cursor(uint8_t c);												// Moves cursor according to the given position (RAW)
 	void gotox(uint8_t _x_);											// Moves cursor to a given x (Position in line)
 	void gotoy(uint8_t _y_);											// Moves cursor to a given y (Line)
-	void gotox(uint8_t _x_, bool guard);								// Extra guard parameter
-	void gotoy(uint8_t _y_, bool guard);								// Extra guard paramenter
+	void gotox(uint8_t _x_, uint8_t guard);								// Extra guard parameter
+	void gotoy(uint8_t _y_, uint8_t guard);								// Extra guard paramenter
 	void gotoxy(uint8_t _x_, uint8_t _y_);								// Moves cursor to a given x and y (Position in line, Line)
-	void gotoxy(uint8_t _x_, uint8_t _y_, bool guard);					// Makeds sure that data in lcd does not go beyond it's bounds
+	void gotoxy(uint8_t _x_, uint8_t _y_, uint8_t guard);				// Makeds sure that data in lcd does not go beyond it's bounds
 
 	uint8_t x, y;														// (x, y) for LCD
 
