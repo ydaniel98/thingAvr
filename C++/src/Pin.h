@@ -2,7 +2,7 @@
 #define Pin_h
 
 #include "structs.h"
-#include "in_outs.h"
+#include "io_s.h"
 
 class Pin {
 public:

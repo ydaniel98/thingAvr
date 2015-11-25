@@ -4,7 +4,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "Pin.h"
-#include "in_outs.h"
+#include "io_s.h"
 
 Pin::Pin(PortData data, uint8_t pinNum): pinNum(pinNum) {
 	ddr 	= data.ddr;

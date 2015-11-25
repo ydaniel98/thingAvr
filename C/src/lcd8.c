@@ -4,7 +4,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "lcd8.h"
-#include "lcdDefs.h"
 
 void lcd8Putc(uint8_t c) {
 
