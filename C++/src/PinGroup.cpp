@@ -10,12 +10,14 @@ PinGroup::PinGroup(Pin *_pins_, uint8_t _bits_): pins(_pins_), bits(_bits_) {
 }
 
 void PinGroup::clear() {
+	value = 0x00;
 	for (uint8_t i=0; i < bits; i++) {
 		pins[i].low();
 	}
 }
 
 void PinGroup::overflow() {
+	value = 0xFFFF;
 	for (uint8_t i=0; i < bits; i++) {
         pins[i].high();
 	}
@@ -27,6 +29,7 @@ void PinGroup::set(unsigned int n) {
 }
 
 void PinGroup::pass(unsigned int n) {
+	value |= n;
 	for (uint8_t i=0; i < bits; i++) {
 		if (n & (1 << (bits - 1 - i))) {
 			pins[i].high();
@@ -36,7 +39,7 @@ void PinGroup::pass(unsigned int n) {
 }
 
 void PinGroup::remove(unsigned int n) {
-	pass(value & ~(n));
+	set(value & ~(n));
 }
 
 void PinGroup::mode(bool m) {

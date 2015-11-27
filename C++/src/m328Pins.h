@@ -22,5 +22,13 @@ static Port portB(portBData);
 
 #endif
 
+#ifdef PORTC_PINS 
+
+static PortData portCData(&DDRC, &PORTC, &PINC);
+
+static Port portC(portCData);
+
+#endif
+
 
 #endif

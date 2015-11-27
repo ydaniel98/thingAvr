@@ -5,6 +5,7 @@
 #include "Pin.h"
 #include "structs.h"
 #include "Port.h"
+#include "io_s.h"
 
 #define DDR  *(ddr)
 #define PORT *(dPort)
@@ -22,7 +23,7 @@ void Port::set(uint8_t s) {
 }
 
 void Port::mode(uint8_t pin, bool m) {
-	m ? DDR |= (1 << pin) : DDR &= ~(1 << pin);
+	MODE(DDR, pin, m);
 }
 
 void Port::mode(bool m) {
@@ -34,7 +35,7 @@ uint8_t Port::read() {
 }
 
 bool Port::read(uint8_t pin) {
-	return PIN & (1 << pin);
+	return READ(PIN, pin);
 }	
 
 void Port::clear() {
@@ -42,7 +43,7 @@ void Port::clear() {
 }		
 
 Pin Port::operator[](uint8_t pin) {
-	return Pin(ddr, dPort, readR, pin);
+	return Pin((PortData){ddr, dPort, readR}, pin);
 }
 
 #endif

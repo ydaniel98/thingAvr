@@ -12,11 +12,7 @@ Pin::Pin(PortData data, uint8_t pinNum): pinNum(pinNum) {
 	readR	= data.readR;
 }
 
-Pin::Pin(volatile uint8_t *ddr, volatile uint8_t *dPort, volatile uint8_t *readR, uint8_t pinNum): pinNum(pinNum) {
-	ddr 	= ddr;
-	dPort	= dPort;
-	readR	= readR;
-}
+Pin::Pin(volatile uint8_t *ddr, volatile uint8_t *dPort, volatile uint8_t *readR, uint8_t pinNum): ddr(ddr), dPort(dPort), readR(readR), pinNum(pinNum) {}
 
 void Pin::high() {
 	HIGH(*dPort, pinNum);
