@@ -2,6 +2,7 @@
 #define lcd8_h
 
 #include "io_s.h"
+#include <avr/io.h>
 
 /* Commands for lcd init */
 
