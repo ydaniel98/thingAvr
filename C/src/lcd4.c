@@ -4,6 +4,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "lcd4.h"
+#include <stdlib.h>
 
 void lcd4Putc(uint8_t c) {
 	lcd4WaitBusy();
@@ -19,11 +20,7 @@ void lcd4Putc(uint8_t c) {
 	_LCD_PORT_WRITE_(0x00);
 	
 	if (x != (LCD_X ))
-	x++;
-	if (x > (LCD_X - 1) && y != (LCD_Y - 1)) {
-		x = 0;
-		lcd4Gotoy(y + 1);
-	}
+		x++;
 }
 
 void lcd4PutCmd(uint8_t command) {
@@ -42,15 +39,13 @@ void lcd4PutCmd(uint8_t command) {
 }
 
 void lcd4Puts(const char *s) {
-	while (*s) {
-		lcd4Putc(*s++);
-	}
+	while (*s)
+		lcd4PutcA(*s++);
 }			
 
 void lcd4Clear() {
 	lcd4PutCmd(0x01);
-	x = 0;
-	y = 0;
+	lcd4Gotoxy(0, 0);
 }	
 
 void lcd4Setup() {
@@ -112,11 +107,9 @@ void lcd4Gotoy(uint8_t _y_) {
 
 void lcd4Gotoxy(uint8_t _x_, uint8_t _y_) {
 	if (_x_ > (LCD_X - 1))
-		_x_ = LCD_X;
+		_x_ = LCD_X - 1;
 	if (_y_ > (LCD_Y - 1))
-		_y_ = LCD_Y;
-	if (_y_ != y)
-		x = 0;
+		_y_ = LCD_Y - 1;
 		
 	x = _x_;
 	y = _y_;
@@ -165,5 +158,22 @@ void lcd4WriteData() {
 	_E_LOW_();
 }
 
+void lcd4Putn(int num, uint8_t radix) {
+	char buffer[11];
+	itoa(num, buffer, radix);
+	lcd4Puts(buffer);
+}
+
+void lcd4ClearRange(uint8_t s, uint8_t f) {
+	for (; s < f; s++)  {
+		lcd4Putc(' ');
+	}
+}
+
+void lcd4PutcA(uint8_t c) {
+	lcd4Putc(c);
+	if (x > (LCD_X - 1) && y != (LCD_Y - 1))
+		lcd4Gotoxy(0, y + 1);
+}
 
 #endif

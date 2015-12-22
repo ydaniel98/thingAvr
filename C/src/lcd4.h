@@ -3,6 +3,7 @@
 
 #include "io_s.h"
 #include <avr/io.h>
+#include <stdlib.h>
 
 /* Commands for lcd init */
 
@@ -75,6 +76,8 @@
 
 #define _READ_MODE_()			_LCD_PORT_WRITE_(0x00); LCD_DDR &= ~(LCD_MASK); _RS_LOW_(); _RW_HIGH_()
 
+#define _LCD_POS_GUARD()		if (x > (LCD_X - 1) && y != (LCD_Y - 1)) lcd4Gotoy(y + 1)
+
 void lcd4NibbleCmd(uint8_t c);										// Sends the lower nibble to the LCD
 void lcd4Putc(uint8_t c);											// Sends a character to the LCD
 void lcd4PutCmd(uint8_t command);									// Sends a command to the LCD
@@ -91,6 +94,10 @@ void lcd4Gotoxy(uint8_t _x_, uint8_t _y_);							// Moves cursor to a given x an
 void lcd4WaitBusy();												// Waits until the busy flag is cleared 
 void lcd4WriteData();												// Writes data to the lcd
 void lcd4Wait();
+
+void lcd4Putn(int num, uint8_t radix);								// Writes a number to the lcd
+void lcd4PutcA(uint8_t c);											// Writes a number but goes to the next line if necessary
+void lcd4ClearRange(uint8_t s, uint8_t f);							// Clears the range specified
 
 uint8_t x, y;														// Variables to keep track of the position in the lcd 
 
