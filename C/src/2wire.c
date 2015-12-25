@@ -15,6 +15,7 @@ uint8_t tWireTransmittion(uint8_t a) {
 			return 1;
 		case T_WIRE_DATA:
 			T_WIRE_SEND_DATA();					// Sends the data in the tw data register
+			break;
 	}
 	
 	T_WIRE_WAIT_TWINT();						// Wait until the TWINT bit is cleared

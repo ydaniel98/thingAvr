@@ -56,8 +56,8 @@
 #define LCD_PORT				PORTD
 #define LCD_DDR					DDRD
 #define LCD_READ				PIND
-#define LCD_MASK				0x0F
-#define LCD_SHIFT				0
+#define LCD_MASK				0xF0
+#define LCD_SHIFT				4
 
 #define _E_HIGH_() 				HIGH(PORT_E, E)
 #define _E_LOW_() 				LOW(PORT_E, E)

@@ -31,7 +31,7 @@
 #define	T_WIRE_GET_SLAVE_WRITE(ADDR, STATUS) \
 				TWDR = ADDR << 1 | TW_WRITE; \
 				STATUS = tWireTransmittion(T_WIRE_DATA); \
-				if (!((STATUS != TW_MT_SLA_NACK) || (STATUS != TW_MT_ARB_LOST) || (STATUS == TW_MT_SLA_ACK))) { \
+				if ((STATUS == TW_MT_SLA_NACK) || (STATUS == TW_MT_ARB_LOST)) { \
 					STATUS = 0; \
 					goto endS; \
 				}
@@ -46,7 +46,7 @@
 #define T_WIRE_GET_SLAVE_READ(ADDR, STATUS) \
 				TWDR = ADDR << 1 | TW_READ; \
 				STATUS = tWireTransmittion(T_WIRE_DATA); \
-				if (!((STATUS != TW_MR_SLA_NACK) || (STATUS != TW_MR_ARB_LOST) || (STATUS == TW_MR_SLA_ACK))) { \
+				if ((STATUS == TW_MR_SLA_NACK) || (STATUS == TW_MR_ARB_LOST)) { \
 					STATUS = 0; \
 					goto endS; \
 				}
