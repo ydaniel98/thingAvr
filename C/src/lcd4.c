@@ -102,7 +102,7 @@ void lcd4Gotox(uint8_t _x_) {
 }
 
 void lcd4Gotoy(uint8_t _y_) {
-	lcd4Gotoxy(x, _y_);
+	lcd4Gotoxy(0, _y_);
 }	
 
 void lcd4Gotoxy(uint8_t _x_, uint8_t _y_) {
@@ -165,15 +165,19 @@ void lcd4Putn(int num, uint8_t radix) {
 }
 
 void lcd4ClearRange(uint8_t s, uint8_t f) {
-	for (; s < f; s++)  {
-		lcd4Putc(' ');
-	}
+	lcd4SetRange(s, f, ' ');
 }
 
 void lcd4PutcA(uint8_t c) {
 	lcd4Putc(c);
 	if (x > (LCD_X - 1) && y != (LCD_Y - 1))
 		lcd4Gotoxy(0, y + 1);
+}
+
+void lcd4SetRange(uint8_t s, uint8_t f, uint8_t c) {
+	for (; s < f; s++)  {
+		lcd4Putc(c);
+	}
 }
 
 #endif

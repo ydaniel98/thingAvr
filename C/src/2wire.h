@@ -53,9 +53,9 @@
 			
 
 uint8_t tWireTransmittion(uint8_t a);
-uint8_t tWireWrite8(uint8_t data, uint8_t addr);
+uint8_t tWireWrite8(uint8_t addr, uint8_t datas);
 
-uint8_t tWireWriteA(uint8_t * data, uint8_t addr, uint8_t s);		// Sends all the bytes in the pointer
+uint8_t tWireWriteA(uint8_t addr, uint8_t * data, uint8_t s);		// Sends all the bytes in the pointer
 
 uint8_t tWireRead(uint8_t addr, uint8_t * buffer, uint16_t s);		// Gets data and sets it on the buffer
 

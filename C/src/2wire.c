@@ -22,7 +22,7 @@ uint8_t tWireTransmittion(uint8_t a) {
 	return (TWSR & TW_STATUS_MASK);				// Return the masked status register
 }
 
-uint8_t tWireWrite8(uint8_t data, uint8_t addr) {
+uint8_t tWireWrite8(uint8_t addr, uint8_t data) {
 	
 	uint8_t twStatus;
 	
@@ -36,7 +36,7 @@ uint8_t tWireWrite8(uint8_t data, uint8_t addr) {
 }
 
 
-uint8_t tWireWriteA(uint8_t * data, uint8_t addr, uint8_t s) {
+uint8_t tWireWriteA(uint8_t addr, uint8_t * data, uint8_t s) {
 	
 	uint8_t twStatus;
 	

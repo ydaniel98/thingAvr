@@ -99,6 +99,8 @@ void lcd4Putn(int num, uint8_t radix);								// Writes a number to the lcd
 void lcd4PutcA(uint8_t c);											// Writes a number but goes to the next line if necessary
 void lcd4ClearRange(uint8_t s, uint8_t f);							// Clears the range specified
 
+void lcd4SetRange(uint8_t s, uint8_t f, uint8_t c);					// Sets a character in the given range
+
 uint8_t x, y;														// Variables to keep track of the position in the lcd 
 
 
