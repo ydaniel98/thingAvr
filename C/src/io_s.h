@@ -18,10 +18,10 @@
 #define WRITE_BITS(NUM, PORT, SHIFT, MASK)	PORT = (PORT & ~MASK) | ((NUM << SHIFT) & MASK)
 #define READ_BITS(READ_R, SHIFT, MASK)		((READ_R & MASK) >> SHIFT)
 
-#define BTN_READ_SAMPLES 6000
+#define BTN_READ_SAMPLES 500
 #ifdef BTN_READ_SAMPLES
 
-uint8_t btnRead(volatile uint8_t readR, uint8_t pin);
+uint8_t btnRead(volatile uint8_t *readR, uint8_t pin);
 
 #endif
 

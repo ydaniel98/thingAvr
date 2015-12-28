@@ -20,10 +20,10 @@
 /********************/
 
 /* Error code variable */
-char errCode;
+uint8_t rtClockErrCode;
 
-//	0	-> All Nominal
-// -1	-> Failed (General)
+//	1	-> All Nominal
+//  0	-> Failed (General)
 
 //	2	-> Failed getting seconds
 //	3	-> Failed getting minutes
@@ -33,19 +33,19 @@ char errCode;
 //	7	-> Failed getting month
 //	8	-> Failed getting year
 
-// -2	-> Failed setting seconds
-// -3	-> Failed setting minutes
-// -4	-> Failed setting hours
-// -5	-> Failed setting day
-// -6	-> Failed setting date
-// -7	-> Failed setting month
-// -8	-> Failed setting year
+//  9	-> Failed setting seconds
+//  10	-> Failed setting minutes
+//  11	-> Failed setting hours
+//  12	-> Failed setting day
+//  13	-> Failed setting date
+//  14	-> Failed setting month
+//  15	-> Failed setting year
 
 /************************/
 
-/* Definitions for error codes (For convenience) */
-#define RT_CLOCK_NOMINAL		0
-#define RT_CLOCK_F_GENERAL		-1
+/* Definitions for error codes */
+#define RT_CLOCK_NOMINAL		1
+#define RT_CLOCK_F_GENERAL		0
 
 #define RT_CLOCK_F_G_SS			2
 #define RT_CLOCK_F_G_MM			3
@@ -55,36 +55,37 @@ char errCode;
 #define RT_CLOCK_F_G_M			7
 #define RT_CLOCK_F_G_Y			8
 
-#define RT_CLOCK_F_S_SS			-2
-#define RT_CLOCK_F_S_MM			-3
-#define RT_CLOCK_F_S_HH			-4
-#define RT_CLOCK_F_S_DD			-5
-#define RT_CLOCK_F_S_D			-6
-#define RT_CLOCK_F_S_M			-7
-#define RT_CLOCK_F_S_Y			-8
+#define RT_CLOCK_F_S_SS			9
+#define RT_CLOCK_F_S_MM			10
+#define RT_CLOCK_F_S_HH			11
+#define RT_CLOCK_F_S_DD			12
+#define RT_CLOCK_F_S_D			13
+#define RT_CLOCK_F_S_M			14
+#define RT_CLOCK_F_S_Y			15
 /*************************************************/
 
 #define _RT_CLOCK_GET_VALUE_(M_VALUE)	(M_VALUE - (6  * (M_VALUE >> 4)))
 #define _RT_CLOCK_GET_M_VALUE_(VALUE)	(VALUE + (6 * (VALUE / 10)))
 
 #define _RT_CLOCK_GET_ITEM(M_ADDR, BUFFER, ERROR) \
-				if (!(tWireWrite8(RT_CLOCK_ADDR, M_ADDR))) { \
-					errCode = ERROR; \
+				rtClockErrCode = ERROR; \
+				if (!tWireStart()) \
 					return 0; \
-				} \
-				if (!(tWireRead(RT_CLOCK_ADDR, BUFFER, 1))) {\
-					errCode = ERROR; \
+				if (!tWireRequest(RT_CLOCK_ADDR, M_ADDR)) \
 					return 0; \
-				} \
-				errCode = 0; \
-				return _RT_CLOCK_GET_VALUE_(BUFFER[0])
+				if (!tWireReadBus(BUFFER)) \
+					return 0; \
+ 				rtClockErrCode = RT_CLOCK_NOMINAL; \
+				tWireNack(); \
+				tWireEnd();	\
+ 				return _RT_CLOCK_GET_VALUE_(BUFFER[0])
 				
 #define _RT_CLOCK_WRITE_ITEM(DATA, ERROR) \
 				if (!tWireWriteA(RT_CLOCK_ADDR, DATA, 2)) { \
-					errCode = ERROR; \
+					rtClockErrCode = ERROR; \
 					return; \
 				} \
-				errCode = 1
+				rtClockErrCode = RT_CLOCK_NOMINAL
 
 /* Write to the RTC */
 
@@ -125,18 +126,5 @@ void rtClockGetDateInfo(dateInfo * dI);
 	/*************/
 	
 /********************/
-
-/* Utils */
-uint8_t time24ToTime12(uint8_t time24);
-
-void getClockString(timeInfo t, char * buffer, uint8_t s);
-void getClockString12(timeInfo t, char * buffer, uint8_t s);
-
-void twoDigitString(uint8_t n, uint8_t * buffer);
-void timeInfoFromClockString(const char * s, timeInfo *t);
-
-uint8_t numberFromTwoDigit(uint8_t d1, uint8_t d2);
-/*********/
-
 
 #endif

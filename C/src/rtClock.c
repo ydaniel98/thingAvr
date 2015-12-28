@@ -7,6 +7,8 @@
 
 
 void rtClockSetup() {
+	T_WIRE_SETUP();
+	rtClockErrCode = 0;
 	rtClockSetSS(rtClockGetSS());		// Echo seconds to check RTC and set an error if necessary
 }
 
@@ -107,14 +109,9 @@ uint8_t rtClockGetHH() {
 }
 
 void rtClockGetTimeInfo(timeInfo * tI) {
-	errCode = 0;
-	
 	tI->ss = rtClockGetSS();
 	tI->mm = rtClockGetMM();
 	tI->hh = rtClockGetHH();
-	
-	if (errCode != 0)
-		errCode = -1;
 }
 	/* Time Info */
 
@@ -140,92 +137,15 @@ uint8_t rtClockGetY() {
 }
 
 void rtClockGetDateInfo(dateInfo * dI) {
-	errCode = 0;
-	
 	rtClockGetTimeInfo(&(dI->now));
 	
 	dI->dd = rtClockGetDD();
 	dI->d  = rtClockGetD();
 	dI->m  = rtClockGetM();
 	dI->y  = rtClockGetY(); 
-	
-	if (errCode != 0)
-		errCode = -1;
 }
 	/*************/
 
 /********************/
-
-/* Utils */
-uint8_t time24ToTime12(uint8_t time24) {
-	if (!time24)
-		return 12;
-	if (time24 < 13)
-		return time24;
-	return time24 - 12;
-}
-
-void twoDigitString(uint8_t n, uint8_t * buffer) {
-	buffer[1] = (n % 10) + '0';
-	buffer[0] = ((n - (n % 10)) / 10) + '0';
-	buffer[2] = '\0';
-}
-
-uint8_t numberFromTwoDigit(uint8_t d1, uint8_t d2) {
-	return ((d1 - '0') * 10) + (d2 - '0');
-}
-
-void timeInfoFromClockString(const char * s, timeInfo *t) {
-	t->hh = numberFromTwoDigit(s[0], s[1]);
-	t->mm = numberFromTwoDigit(s[3], s[4]);
-	t->ss = numberFromTwoDigit(s[6], s[7]);
-}
-
-void getClockString(timeInfo t, char * buffer, uint8_t s) {
-	uint8_t numBuffer[3];
-	if (s < 9)
-		return;
-	twoDigitString(t.hh, numBuffer);
-	buffer[0] = numBuffer[0];
-	buffer[1] = numBuffer[1];
-	
-	buffer[2] = ':';
-	
-	twoDigitString(t.mm, numBuffer);
-	buffer[3] = numBuffer[0];
-	buffer[4] = numBuffer[1];
-
-	buffer[5] = ':';
-	
-	twoDigitString(t.ss, numBuffer);
-	buffer[6] = numBuffer[0];
-	buffer[7] = numBuffer[1];
-	
-	buffer[8] = '\0';
-}
-
-void getClockString12(timeInfo t, char * buffer, uint8_t s) {
-	uint8_t am = 1;
-	if (t.hh > 12)
-		am = 0;
-		
-	if (s < 12)
-		return;
-		
-	t.hh = time24ToTime12(t.hh);
-	getClockString(t, buffer, s);
-	
-	buffer[8] = ' ';
-	
-	if (am)
-		buffer[9]  = 'A';
-	else
-		buffer[9]  = 'P';
-		
-	buffer[10] = 'M';
-	buffer[11] = '\0';
-		
-}
-/*********/
 
 #endif
