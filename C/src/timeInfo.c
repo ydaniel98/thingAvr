@@ -6,11 +6,7 @@
 
 /* Utils */
 uint8_t time24ToTime12(uint8_t time24) {
-	if (!time24)
-		return 12;
-	if (time24 < 13)
-		return time24;
-	return time24 - 12;
+	return ((time24 + 11) % 12 + 1);
 }
 
 void twoDigitString(uint8_t n, uint8_t * buffer) {
@@ -57,8 +53,8 @@ void getClockString12(timeInfo t, char * buffer, uint8_t s) {
 	return;
 	
 	uint8_t am = 1;
-	if (t.hh > 12)
-	am = 0;
+	if (t.hh >= 12)
+		am = 0;
 	
 	t.hh = time24ToTime12(t.hh);
 	getClockString(t, buffer, s);

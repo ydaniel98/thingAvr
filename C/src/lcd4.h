@@ -43,21 +43,21 @@
 
 #define DDR_E					DDRB
 #define PORT_E					PORTB
-#define E						PINB2
+#define E						PINB4
 
 #define DDR_RS					DDRB
 #define PORT_RS					PORTB
-#define RS						PINB0
+#define RS						PINB5
 
-#define DDR_RW					DDRB
-#define PORT_RW					PORTB
-#define RW						PINB1
+#define DDR_RW					DDRC
+#define PORT_RW					PORTC
+#define RW						PINC1
 
-#define LCD_PORT				PORTD
-#define LCD_DDR					DDRD
-#define LCD_READ				PIND
-#define LCD_MASK				0xF0
-#define LCD_SHIFT				4
+#define LCD_PORT				PORTB
+#define LCD_DDR					DDRB
+#define LCD_READ				PINB
+#define LCD_MASK				0x0F
+#define LCD_SHIFT				0
 
 #define _E_HIGH_() 				HIGH(PORT_E, E)
 #define _E_LOW_() 				LOW(PORT_E, E)

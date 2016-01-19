@@ -7,9 +7,9 @@
 #define IN(DDR, PIN)  		DDR &= ~(1 << PIN)
 #define MODE(DDR, PIN, M)	M ? OUT(DDR, PIN) : IN(DDR, PIN)
 
-#define TOGGLE(PORT, PIN)	PORT ^= 1 << PIN
-#define HIGH(PORT, PIN) 	PORT |= 1 << PIN
-#define LOW(PORT, PIN)  	PORT &= ~(1 << PIN)
+#define TOGGLE(_PORT, PIN)	_PORT ^= 1 << PIN
+#define HIGH(_PORT, PIN) 	_PORT |= 1 << PIN
+#define LOW(_PORT, PIN)  	_PORT &= ~(1 << PIN)
 
 #define SET(PORT, PIN, S) 	S ? HIGH(PORT, PIN) : LOW(PORT, PIN)
 
