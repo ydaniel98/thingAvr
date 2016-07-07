@@ -3,7 +3,6 @@
 
 #include <avr/io.h>
 #include <2wire.h>
-#include <timeInfo.h>
 
 /* RTC I2C Address */
 #define RT_CLOCK_ADDR 0x68
@@ -14,7 +13,7 @@
 #define _MM_ADDR_	0x01		// Minutes Address
 #define _HH_ADDR_	0x02		// Hours   Address
 #define _DD_ADDR_	0x03		// Day     Address
-#define _D_ADDR_	0x04		// Date    Address 
+#define _D_ADDR_	0x04		// Date    Address
 #define _M_ADDR_	0x05		// Month   Address
 #define _Y_ADDR_	0x06		// Year	   Address
 /********************/
@@ -79,7 +78,7 @@ uint8_t rtClockErrCode;
 				tWireNack(); \
 				tWireEnd();	\
  				return _RT_CLOCK_GET_VALUE_(BUFFER[0])
-				
+
 #define _RT_CLOCK_WRITE_ITEM(DATA, ERROR) \
 				if (!tWireWriteA(RT_CLOCK_ADDR, DATA, 2)) { \
 					rtClockErrCode = ERROR; \
@@ -87,44 +86,40 @@ uint8_t rtClockErrCode;
 				} \
 				rtClockErrCode = RT_CLOCK_NOMINAL
 
-/* Write to the RTC */
+/*
+* Write to the RTC
+*/
 
-	/* Time Info */
 void rtClockSetSS(uint8_t ss);
-void rtClockSetMM(uint8_t mm);	
+void rtClockSetMM(uint8_t mm);
 void rtClockSetHH(uint8_t hh);
-void rtClockSetTimeInfo(timeInfo tI);
-	/*************/
-	
-	/* Date Info */
+// void rtClockSetTimeInfo(timeInfo tI);
+
 void rtClockSetDD(uint8_t dd);
 void rtClockSetD(uint8_t d);
 void rtClockSetM(uint8_t m);
 void rtClockSetY(uint8_t y);
-void rtClockSetDateInfo(dateInfo dI);
-	/*************/
-	
-/********************/
+// void rtClockSetDateInfo(dateInfo dI);
+
+/**/
 
 void rtClockSetup();
 
-/* Read from the RTC */
+/*
+* Read from the RTC
+*/
 
-	/* Time Info */
 uint8_t rtClockGetSS();
 uint8_t rtClockGetMM();
 uint8_t rtClockGetHH();
-void rtClockGetTimeInfo(timeInfo * tI);
-	/* Time Info */
-	
-	/* Date Info */
+// void rtClockGetTimeInfo(timeInfo * tI);
+
 uint8_t rtClockGetDD();
 uint8_t rtClockGetD();
 uint8_t rtClockGetM();
 uint8_t rtClockGetY();
-void rtClockGetDateInfo(dateInfo * dI);
-	/*************/
-	
-/********************/
+// void rtClockGetDateInfo(dateInfo * dI);
+
+/**/
 
 #endif

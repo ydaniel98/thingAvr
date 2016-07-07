@@ -4,6 +4,7 @@
 #include <avr/io.h>
 #include <2wire.h>
 #include <rtClock.h>
+#include <time.h>
 
 
 void rtClockSetup() {
@@ -12,9 +13,6 @@ void rtClockSetup() {
 	rtClockSetSS(rtClockGetSS());		// Echo seconds to check RTC and set an error if necessary
 }
 
-/* Write to the RTC */
-
-	/* Time Info */
 void rtClockSetSS(uint8_t ss) {
 	if (ss > 59)
 		ss = 59;
@@ -36,15 +34,13 @@ void rtClockSetHH(uint8_t hh) {
 	_RT_CLOCK_WRITE_ITEM(data, RT_CLOCK_F_G_HH);
 }
 
-void rtClockSetTimeInfo(timeInfo tI) {
-	rtClockSetSS(tI.ss);
-	rtClockSetMM(tI.mm);
-	rtClockSetHH(tI.hh);
-}
+// void rtClockSetTimeInfo(timeInfo tI) {
+// 	rtClockSetSS(tI.ss);
+// 	rtClockSetMM(tI.mm);
+// 	rtClockSetHH(tI.hh);
+// }
 
-	/*************/
 
-	/* Date Info */
 void rtClockSetDD(uint8_t dd) {
 	if (dd > 7)
 		dd = 7;
@@ -79,20 +75,14 @@ void rtClockSetY(uint8_t y) {
 	_RT_CLOCK_WRITE_ITEM(data, RT_CLOCK_F_G_Y);
 }
 
-void rtClockSetDateInfo(dateInfo dI) {
-	rtClockSetTimeInfo(dI.now);
-	rtClockSetDD(dI.dd);
-	rtClockSetD(dI.d);
-	rtClockSetM(dI.m);
-	rtClockSetY(dI.y);
-}
-	/*************/
+// void rtClockSetDateInfo(dateInfo dI) {
+// 	rtClockSetTimeInfo(dI.now);
+// 	rtClockSetDD(dI.dd);
+// 	rtClockSetD(dI.d);
+// 	rtClockSetM(dI.m);
+// 	rtClockSetY(dI.y);
+// }
 
-/********************/
-
-/* Read from the RTC */
-
-	/* Time Info */
 uint8_t rtClockGetSS() {
 	uint8_t ss[1];
 	_RT_CLOCK_GET_ITEM(_SS_ADDR_, ss, RT_CLOCK_F_G_SS);
@@ -108,14 +98,12 @@ uint8_t rtClockGetHH() {
 	_RT_CLOCK_GET_ITEM(_HH_ADDR_, hh, RT_CLOCK_F_G_HH);
 }
 
-void rtClockGetTimeInfo(timeInfo * tI) {
-	tI->ss = rtClockGetSS();
-	tI->mm = rtClockGetMM();
-	tI->hh = rtClockGetHH();
-}
-	/* Time Info */
+// void rtClockGetTimeInfo(timeInfo * tI) {
+// 	tI->ss = rtClockGetSS();
+// 	tI->mm = rtClockGetMM();
+// 	tI->hh = rtClockGetHH();
+// }
 
-	/* Date Info */
 uint8_t rtClockGetDD() {
 	uint8_t dd[1];
 	_RT_CLOCK_GET_ITEM(_DD_ADDR_, dd, RT_CLOCK_F_G_DD);
@@ -136,16 +124,13 @@ uint8_t rtClockGetY() {
 	_RT_CLOCK_GET_ITEM(_Y_ADDR_, y, RT_CLOCK_F_G_Y);
 }
 
-void rtClockGetDateInfo(dateInfo * dI) {
-	rtClockGetTimeInfo(&(dI->now));
-	
-	dI->dd = rtClockGetDD();
-	dI->d  = rtClockGetD();
-	dI->m  = rtClockGetM();
-	dI->y  = rtClockGetY(); 
-}
-	/*************/
-
-/********************/
+// void rtClockGetDateInfo(dateInfo * dI) {
+// 	rtClockGetTimeInfo(&(dI->now));
+//
+// 	dI->dd = rtClockGetDD();
+// 	dI->d  = rtClockGetD();
+// 	dI->m  = rtClockGetM();
+// 	dI->y  = rtClockGetY();
+// }
 
 #endif
